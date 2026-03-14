@@ -2,6 +2,7 @@ import fs from 'fs';
 import readline from 'readline';
 import v8 from 'v8';
 import path from 'path';
+import { JobSchema } from './schemas.js';
 
 const CACHE_FILE = 'jobs.jsonl.idx.cache';
 
@@ -89,13 +90,23 @@ export async function loadJobs(options = {}) {
     lineNumber++;
 
     try {
-      const job = JSON.parse(line);
-      const extracted = extractJobFields(job);
+      const rawJob = JSON.parse(line);
+      
+      // Validate with Zod
+      const validation = JobSchema.safeParse(rawJob);
+      if (!validation.success) {
+        if (verbose && stats.errors < 5) {
+          console.warn(`\n⚠️  Validation error at line ${lineNumber}:`, validation.error.issues[0].message);
+        }
+        stats.errors++;
+        continue;
+      }
 
+      const extracted = extractJobFields(validation.data);
       jobs.push(extracted);
 
-      // Extract embeddings
-      const v7 = job.v7_processed_job_data || {};
+      // Extract embeddings from validated data
+      const v7 = validation.data.v7_processed_job_data;
       if (v7.embedding_explicit_vector) {
         embeddings.explicit.push(new Float32Array(v7.embedding_explicit_vector));
         embeddings.inferred.push(new Float32Array(v7.embedding_inferred_vector || []));

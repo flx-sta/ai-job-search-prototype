@@ -25,6 +25,35 @@ The metric would be average relevance of the top 5 results.
 - **`jobs.jsonl`**: The dataset file must be placed in the project root.
 - **OpenAI API Key**: Required for intent extraction and embeddings. Place it in a `.env` file as `OPENAI_API_KEY`.
 
+### Typical Data Structure
+
+The `jobs.jsonl` file is expected to contain one JSON object per line with the following structure:
+
+```json
+{
+  "id": "successfactors___com___JHBP___1361752300",
+  "job_information": {
+    "title": "Director of Benefits (Somewhere, WA, US, 12345)",
+    "description": "John Doe is the industry leader..."
+  },
+  "v5_processed_company_data": {
+    "name": "John Doe Industries"
+  },
+  "v7_processed_job_data": {
+    "work_arrangement": {
+      "workplace_type": "Onsite",
+      "workplace_locations": [
+        { "city": "Somewhere", "state": "Washington", "country_code": "US" }
+      ]
+    },
+    "experience_requirements": { "seniority_level": "Director" },
+    "embedding_explicit_vector": [...],
+    "embedding_inferred_vector": [...],
+    "embedding_company_vector": [...]
+  }
+}
+```
+
 ## How to Run
 
 [**Demo Video**](./demo-video.mp4)
@@ -62,6 +91,7 @@ This demonstrates new search, location refinement, exclude refinement, and seman
 ### How I processed and represented jobs data
 
 - Read `jobs.jsonl` line-by-line to avoid loading raw JSON at once.
+- **Validated data integrity using Zod** to ensure schema compliance for 1M+ records without memory bloat.
 - Extracted a compact, search-focused job object (title, company, location, seniority, etc.) and discarded raw data to save memory.
 - Loaded precomputed embeddings into **`Float32Array`** for memory-efficient vector operations. Missing vectors are filled with zero vectors.
 - Built in-memory indices for fast filtering by workplace type, seniority, industry, etc.
