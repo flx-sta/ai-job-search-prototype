@@ -160,7 +160,7 @@ You can tune these in `src/search.js`:
 - Very tight constraints: multiple excludes with low overlap
 - Compound negations: `not senior, not mid, but also no startups`
 
-### Improvements with more time
+### Possible future Improvements
 
 - Formal evaluation: build a small labeled query set and compare retrieval quality across `gpt-4o-mini` vs `gpt-4o`, plus threshold tuning based on measured precision/recall.
 - Scalability: move embeddings and metadata into a persistent ANN index (FAISS/HNSW) and store filters in a columnar store or SQLite for fast pre-filtering beyond 100k.
