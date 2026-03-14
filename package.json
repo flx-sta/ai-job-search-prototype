@@ -1,0 +1,20 @@
+{
+  "name": "hiring-cafe-job-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js",
+    "report": "node src/tools/report.js",
+    "explore": "node src/tools/explore.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.2.4",
+    "inquirer": "^13.2.2",
+    "openai": "^6.18.0"
+  }
+}
