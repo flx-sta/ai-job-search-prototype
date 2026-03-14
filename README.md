@@ -18,6 +18,13 @@ Results could be scored using a manual relevance scale:
 
 The metric would be average relevance of the top 5 results.
 
+## Requirements
+
+- **Node.js**: Version 18.x or later.
+- **npm**: Version 9.x or later.
+- **`jobs.jsonl`**: The dataset file must be placed in the project root.
+- **OpenAI API Key**: Required for intent extraction and embeddings. Place it in a `.env` file as `OPENAI_API_KEY`.
+
 ## How to Run
 
 [**Demo Video**](./demo-video.mp4)
